@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Electricity Bill Calculator</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">Electricity Bill Calculator</h1>
+        <div class="card p-4 shadow-sm">
+            <form id="billForm">
+                <div class="mb-3">
+                    <label for="previousReading" class="form-label">Previous Meter Reading (kWh):</label>
+                    <input type="number" class="form-control" id="previousReading" required step="0.01">
+                </div>
+
+                <div class="mb-3">
+                    <label for="presentReading" class="form-label">Present Meter Reading (kWh):</label>
+                    <input type="number" class="form-control" id="presentReading" required step="0.01">
+                </div>
+
+                <div class="mb-3">
+                    <label for="ratePerKwh" class="form-label">Rate per Kilowatt-Hour:</label>
+                    <input type="number" class="form-control" id="ratePerKwh" required step="0.01">
+                </div>
+
+                <div class="mb-3">
+                    <label for="readingDate" class="form-label">Date of Reading:</label>
+                    <input type="date" class="form-control" id="readingDate" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="shop" class="form-label">Shop:</label>
+                    <div class="d-flex">
+                        <select id="shop" class="form-select">
+                            <option value="boober sips">Boober Sips</option>
+                            <option value="you and me bags">You and Me Bags</option>
+                            <option value="haws">Haws</option>
+                        </select>
+                        <button type="button" class="btn btn-secondary ms-2" onclick="addNewShop()">Add New Shop</button>
+                    </div>
+                </div>
+
+                <button type="button" class="btn btn-primary w-100" onclick="calculateAndSaveBill()">Calculate and Save</button>
+            </form>
+        </div>
+
+        <div class="mt-5">
+            <h2>Results</h2>
+            <p id="results" class="alert alert-info d-none"></p>
+        </div>
+
+        <div id="savedReadings" class="mt-4">
+            <h2>Saved Readings and Bills</h2>
+            <table class="table table-bordered table-hover">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Date</th>
+                        <th>Previous Reading (kWh)</th>
+                        <th>Present Reading (kWh)</th>
+                        <th>Consumed (kWh)</th>
+                        <th>Rate per kWh</th>
+                        <th>Total Bill</th>
+                        <th>Shop</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="savedReadingsTable">
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Load saved data on page load
+        window.onload = function () {
+            loadSavedData();
+        };
+
+        function calculateAndSaveBill() {
+            const previousReading = parseFloat(document.getElementById('previousReading').value);
+            const presentReading = parseFloat(document.getElementById('presentReading').value);
+            const ratePerKwh = parseFloat(document.getElementById('ratePerKwh').value);
+            const readingDate = document.getElementById('readingDate').value;
+            const shop = document.getElementById('shop').value;
+
+            if (isNaN(previousReading) || isNaN(presentReading) || isNaN(ratePerKwh) || !readingDate || !shop) {
+                const results = document.getElementById('results');
+                results.classList.remove('d-none');
+                results.classList.add('alert-danger');
+                results.innerText = 'Error: Please enter valid numeric values, a date, and select a shop.';
+                return;
+            }
+
+            if (presentReading < previousReading) {
+                const results = document.getElementById('results');
+                results.classList.remove('d-none');
+                results.classList.add('alert-danger');
+                results.innerText = 'Error: Present reading cannot be less than the previous reading.';
+                return;
+            }
+
+            const consumedKilowatts = presentReading - previousReading;
+            const totalBill = consumedKilowatts * ratePerKwh;
+
+            const results = document.getElementById('results');
+            results.classList.remove('d-none', 'alert-danger');
+            results.classList.add('alert-success');
+            results.innerHTML = `
+                Consumed Kilowatts: ${consumedKilowatts.toFixed(2)} kWh<br>
+                Rate per Kilowatt-Hour: ${ratePerKwh.toFixed(2)}<br>
+                Total Bill: ${totalBill.toFixed(2)}<br>
+                Shop: ${shop}
+            `;
+
+            saveReading(readingDate, previousReading, presentReading, consumedKilowatts, ratePerKwh, totalBill, shop);
+        }
+
+        function saveReading(date, previous, present, consumed, rate, total, shop) {
+            const table = document.getElementById('savedReadingsTable');
+            const row = table.insertRow();
+
+            const dateCell = row.insertCell(0);
+            const previousCell = row.insertCell(1);
+            const presentCell = row.insertCell(2);
+            const consumedCell = row.insertCell(3);
+            const rateCell = row.insertCell(4);
+            const totalCell = row.insertCell(5);
+            const shopCell = row.insertCell(6);
+            const actionCell = row.insertCell(7);
+
+            dateCell.innerText = date;
+            previousCell.innerText = previous.toFixed(2);
+            presentCell.innerText = present.toFixed(2);
+            consumedCell.innerText = consumed.toFixed(2);
+            rateCell.innerText = rate.toFixed(2);
+            totalCell.innerText = total.toFixed(2);
+            shopCell.innerText = shop;
+
+            const deleteButton = document.createElement('button');
+            deleteButton.className = 'btn btn-danger btn-sm';
+            deleteButton.innerText = 'Delete';
+            deleteButton.onclick = function () {
+                table.deleteRow(row.rowIndex - 1);
+                deleteReadingFromLocalStorage(date);
+            };
+
+            actionCell.appendChild(deleteButton);
+
+            saveReadingToLocalStorage(date, previous, present, consumed, rate, total, shop);
+        }
+
+        function saveReadingToLocalStorage(date, previous, present, consumed, rate, total, shop) {
+            const savedData = JSON.parse(localStorage.getItem('savedReadings')) || [];
+            savedData.push({ date, previous, present, consumed, rate, total, shop });
+            localStorage.setItem('savedReadings', JSON.stringify(savedData));
+        }
+
+        function deleteReadingFromLocalStorage(date) {
+            let savedData = JSON.parse(localStorage.getItem('savedReadings')) || [];
+            savedData = savedData.filter(reading => reading.date !== date);
+            localStorage.setItem('savedReadings', JSON.stringify(savedData));
+        }
+
+        function loadSavedData() {
+            const savedData = JSON.parse(localStorage.getItem('savedReadings')) || [];
+            savedData.forEach(reading => {
+                saveReading(
+                    reading.date,
+                    parseFloat(reading.previous),
+                    parseFloat(reading.present),
+                    parseFloat(reading.consumed),
+                    parseFloat(reading.rate),
+                    parseFloat(reading.total),
+                    reading.shop
+                );
+            });
+        }
+
+        function addNewShop() {
+            const newShop = prompt("Enter the name of the new shop:");
+            if (newShop) {
+                const shopDropdown = document.getElementById('shop');
+                const newOption = document.createElement('option');
+                newOption.value = newShop;
+                newOption.textContent = newShop;
+                shopDropdown.appendChild(newOption);
+                shopDropdown.value = newShop; // Automatically select the new shop
+            }
+        }
+    </script>
+</body>
+</html>
