@@ -1,0 +1,17 @@
+import axios from 'axios';
+import { Bill } from '../types/Bill';
+
+const API_URL = 'http://localhost:5000/api/bills';
+
+// Exclude `calculatedBill` because it is calculated on the backend
+export const calculateBill = async (
+  billData: Omit<Bill, '_id' | 'createdAt' | 'calculatedBill'>
+): Promise<Bill> => {
+  const response = await axios.post(`${API_URL}/calculate`, billData);
+  return response.data;
+};
+
+export const getBillHistory = async (): Promise<Bill[]> => {
+  const response = await axios.get(`${API_URL}/history`);
+  return response.data;
+};
