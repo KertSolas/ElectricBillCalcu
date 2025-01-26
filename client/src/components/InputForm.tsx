@@ -37,42 +37,66 @@ const InputForm: React.FC<Props> = ({ onBillCalculated }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="p-4 space-y-4">
-      <input
-        type="number"
-        name="previousReading"
-        placeholder="Previous Reading"
-        value={formData.previousReading}
-        onChange={handleChange}
-        required
-      />
-      <input
-        type="number"
-        name="currentReading"
-        placeholder="Current Reading"
-        value={formData.currentReading}
-        onChange={handleChange}
-        required
-      />
-      <input
-        type="number"
-        name="rate"
-        placeholder="Rate per Unit"
-        value={formData.rate}
-        onChange={handleChange}
-        required
-      />
-      <input
-        type="date"
-        name="date"
-        value={formData.date}
-        onChange={handleChange}
-        required
-      />
-      <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded">
-        Calculate Bill
-      </button>
-    </form>
+    <><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"></link><form onSubmit={handleSubmit} className="needs-validation p-4 border border-secondary rounded">
+      <div className="form-group row">
+        <label htmlFor="previousReading" className="col-sm-4 col-form-label">Previous Reading</label>
+        <div className="col-sm-8">
+          <input
+            type="number"
+            className="form-control"
+            id="previousReading"
+            name="previousReading"
+            placeholder="Previous Reading"
+            value={formData.previousReading}
+            onChange={handleChange}
+            required />
+        </div>
+      </div>
+      <div className="form-group row">
+        <label htmlFor="currentReading" className="col-sm-4 col-form-label">Current Reading</label>
+        <div className="col-sm-8">
+          <input
+            type="number"
+            className="form-control"
+            id="currentReading"
+            name="currentReading"
+            placeholder="Current Reading"
+            value={formData.currentReading}
+            onChange={handleChange}
+            required />
+        </div>
+      </div>
+      <div className="form-group row">
+        <label htmlFor="rate" className="col-sm-4 col-form-label">Rate per Unit</label>
+        <div className="col-sm-8">
+          <input
+            type="number"
+            className="form-control"
+            id="rate"
+            name="rate"
+            placeholder="Rate per Unit"
+            value={formData.rate}
+            onChange={handleChange}
+            required />
+        </div>
+      </div>
+      <div className="form-group row">
+        <label htmlFor="date" className="col-sm-4 col-form-label">Date</label>
+        <div className="col-sm-8">
+          <input
+            type="date"
+            className="form-control"
+            id="date"
+            name="date"
+            value={formData.date}
+            onChange={handleChange}
+            required />
+        </div>
+      </div>
+      <div className="text-center">
+        <button type="submit" className="btn btn-primary mx-auto">Calculate Bill</button>
+      </div>
+    </form></>
   );
 };
 

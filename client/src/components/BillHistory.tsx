@@ -15,16 +15,31 @@ const BillHistory: React.FC = () => {
   }, []);
 
   return (
-    <div className="p-4">
-      <h2 className="text-xl font-bold">Bill History</h2>
-      {history.map((bill: Bill) => (
-        <div key={bill._id} className="border p-2 mb-2">
-            <p>Previous: {bill.previousReading} | Current: {bill.currentReading}</p>
-            <p>Rate: {bill.rate} | Date: {new Date(bill.date).toLocaleDateString()}</p>
-            <p>Total Bill: {bill.calculatedBill}</p>
-        </div>
-        ))}
-    </div>
+    <><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"></link><div className="container">
+      <h2 className="text-center mb-4">Bill History</h2>
+      <table className="table table-striped table-bordered">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Previous Reading</th>
+            <th>Current Reading</th>
+            <th>Rate</th>
+            <th>Total Bill</th>
+          </tr>
+        </thead>
+        <tbody>
+          {history.map((bill: Bill) => (
+            <tr key={bill._id}>
+              <td>{new Date(bill.date).toLocaleDateString()}</td>
+              <td>{bill.previousReading}</td>
+              <td>{bill.currentReading}</td>
+              <td>{bill.rate}</td>
+              <td>{bill.calculatedBill}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div></>
   );
 };
 
