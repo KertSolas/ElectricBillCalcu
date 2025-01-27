@@ -1,19 +1,19 @@
 {
-    "projects": [
+    "version": 2,
+    "builds": [
       {
-        "src": "client",
-        "output": "build",
-        "framework": "react"
+        "src": "client/package.json",
+        "use": "@vercel/static-build"
       },
       {
-        "src": "server",
-        "functions": "api"
+        "src": "api/**/*.js",
+        "use": "@vercel/node"
       }
     ],
-    "rewrites": [
+    "routes": [
       {
-        "source": "/api/(.*)",
-        "destination": "/server/api/$1"
+        "src": "/api/(.*)",
+        "dest": "/api/$1"
       }
     ]
   }
