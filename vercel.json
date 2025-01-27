@@ -2,6 +2,9 @@
     "version": 2,
     "builds": [
       {
+        "buildCommand": "concurrently \"cd server && npm run dev\" \"cd client && npm start\""
+      },
+      {
         "src": "client/package.json",
         "use": "@vercel/static-build"
       },
