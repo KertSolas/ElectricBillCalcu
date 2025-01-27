@@ -5,6 +5,7 @@ export interface Bill {
     rate: number;
     date: string;
     calculatedBill: number;
+    shop: {name: string; _id: string};
     createdAt?: string;
   }
   

@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const connectDB = require('./database/connection');
 const billRoutes = require('./routes/billRoutes');
+const shopRoutes = require('./routes/shopRoutes');
 
 dotenv.config();
 connectDB();
@@ -16,6 +17,7 @@ app.use(bodyParser.json());
 
 // Routes
 app.use('/api/bills', billRoutes);
+app.use('/api/shops', shopRoutes);
 
 // Start Server
 const PORT = process.env.PORT || 5000;
