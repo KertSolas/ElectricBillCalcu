@@ -77,31 +77,31 @@ const InputForm: React.FC<Props> = ({ onBillCalculated }) => {
     <><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"></link>
       <form onSubmit={handleSubmit} className="needs-validation p-4 border border-secondary rounded">
         <div className="form-group row">
-        <label className="col-sm-2 col-form-label">Previous Reading</label>
+        <label className="col-sm-4 col-form-label">Previous Reading</label>
           <div className="col-sm-10">
             <input type="number" className="form-control" id="previousReading" name="previousReading" value={formData.previousReading} onChange={handleChange} required />
           </div>
         </div>
         <div className="form-group row">
-          <label className="col-sm-2 col-form-label">Current Reading</label>
+          <label className="col-sm-4 col-form-label">Current Reading</label>
           <div className="col-sm-10">
             <input type="number" className="form-control" id="currentReading" name="currentReading" value={formData.currentReading} onChange={handleChange} required />
           </div>
         </div>
         <div className="form-group row">
-          <label className="col-sm-2 col-form-label">Rate</label>
+          <label className="col-sm-4 col-form-label">Rate</label>
           <div className="col-sm-10">
             <input type="number" className="form-control" id="rate" name="rate" value={formData.rate} onChange={handleChange} required />
           </div>
         </div>
         <div className="form-group row">
-          <label className="col-sm-2 col-form-label">Date</label>
+          <label className="col-sm-4 col-form-label">Date</label>
           <div className="col-sm-10">
             <input type="date" className="form-control" id="date" name="date" value={formData.date} onChange={handleChange} required />
           </div>
         </div>
         <div className="form-group row">
-            <label className="col-sm-2 col-form-label">Shop</label>
+            <label className="col-sm-4 col-form-label">Shop</label>
             <div className="col-sm-10">
               {shops.length > 0 ? (
                 <select
