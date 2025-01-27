@@ -1,4 +1,15 @@
 {
+    "projects": [
+      {
+        "src": "client",
+        "output": "build",
+        "framework": "react"
+      },
+      {
+        "src": "server",
+        "functions": "api"
+      }
+    ],
     "rewrites": [
       {
         "source": "/api/(.*)",
@@ -6,3 +17,4 @@
       }
     ]
   }
+  
