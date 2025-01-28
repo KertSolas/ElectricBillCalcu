@@ -67,8 +67,8 @@ const BillHistory: React.FC = () => {
               <td>{new Date(bill.date).toLocaleDateString()}</td>
               <td>{bill.previousReading}</td>
               <td>{bill.currentReading}</td>
-              <td>{bill.rate}</td>
-              <td>{bill.calculatedBill}</td>
+              <td>₱ {bill.rate}</td>
+              <td>₱ {bill.calculatedBill}</td>
               <td>{bill.shop.name}</td>
               <td>
                 <button
