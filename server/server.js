@@ -19,7 +19,7 @@ app.use(bodyParser.json());
 app.use('/api/bills', billRoutes);
 app.use('/api/shops', shopRoutes);
 
-app.get('/', (req, res) => res.send('Hello World!'));
+app.get('/', (req, res) => res.send(`Hello World! this is the backend server running on port ${PORT}`));
 
 // Start Server
 const PORT = process.env.PORT || 5000;
