@@ -39,11 +39,11 @@ const CalculatorPage: React.FC = () => {
                       </li>
                       <li className="list-group-item">
                         <span className="text-muted">Rate:</span>
-                        <span className="float-right">₱ {calculatedBill.rate}</span>
+                        <span className="float-right">₱ {calculatedBill.rate.toFixed(2)}</span>
                       </li>
                       <li className="list-group-item">
                         <span className="text-muted">Total Bill:</span>
-                        <span className="float-right">₱ {calculatedBill.calculatedBill}</span>
+                        <span className="float-right">₱ {calculatedBill.calculatedBill.toFixed(2)}</span>
                       </li>
                       <li className="list-group-item">
                         <span className="text-muted">Date:</span>

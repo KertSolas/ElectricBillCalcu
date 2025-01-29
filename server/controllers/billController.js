@@ -29,8 +29,7 @@ const calculateBill = async (req, res) => {
       return res.status(400).json({ message: 'Current reading must be greater than previous reading.' });
     }
 
-    // Calculate the bill
-    const calculatedBill = unitsConsumed * rate;
+    const calculatedBill = Number((unitsConsumed * rate).toFixed(2));
 
     // Create the bill in the database
     const newBill = await Bill.create({
