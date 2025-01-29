@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { Bill } from '../types/Bill';
 
-const API_URL = 'http://localhost:5000/api/bills';
+const API_URL = 'https://electric-bill-calcu-server.vercel.app/api/bills';
 
 // Exclude `calculatedBill` because it is calculated on the backend
 export const calculateBill = async (
