@@ -11,16 +11,15 @@ const BillHistory: React.FC = () => {
 
   useEffect(() => {
     const fetchShops = async () => {
-      const shopsData = await getShops(); // assuming getShops is a function that fetches shops data
+      const shopsData = await getShops(); 
       setShops(shopsData);
     };
     fetchShops();
-  }, [])
+  }, []);
 
   useEffect(() => {
     const fetchHistory = async () => {
       const bills = await getBillHistory();
-      console.log("setHistory",setHistory(bills));
       setHistory(bills);
     };
     fetchHistory();
@@ -31,8 +30,8 @@ const BillHistory: React.FC = () => {
     if (!confirmDelete) return;
 
     try {
-      await deleteBill(billId); // Call the delete service
-      setHistory((prevHistory) => prevHistory.filter((bill) => bill._id !== billId)); // Remove deleted bill from state
+      await deleteBill(billId);
+      setHistory((prevHistory) => prevHistory.filter((bill) => bill._id !== billId)); 
       alert('Bill deleted successfully.');
     } catch (error) {
       console.error('Error deleting bill:', error);
@@ -40,50 +39,78 @@ const BillHistory: React.FC = () => {
     }
   };
 
-  console.log(history);
-
   return (
-    <><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"></link><div className="container">
-      <h2 className="text-center mb-4">Bill History</h2>
-      <table className="table table-striped table-bordered">
-        <thead>
-          <tr>
-            <th>Date</th>
-            <th>Previous Reading</th>
-            <th>Current Reading</th>
-            <th>Rate</th>
-            <th>Total Bill</th>
-            <th>Shop</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-        {history.map((bill) => {
-          console.log('bill.shop:', bill.shop);
-          console.log('shops:', shops);
+    <>
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" />
+      <div className="container">
+        <h2 className="text-center mb-4">Bill History</h2>
+        
+        {/* Table for larger screens */}
+        <div className="d-none d-md-block">
+          <table className="table table-striped table-bordered">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Previous Reading</th>
+                <th>Current Reading</th>
+                <th>Rate</th>
+                <th>Total Bill</th>
+                <th>Shop</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {history.map((bill, index) => (
+                <tr key={bill._id} className={index % 2 === 0 ? 'table-light' : 'table-secondary'}>
+                  <td>{new Date(bill.date).toLocaleDateString()}</td>
+                  <td>{bill.previousReading}</td>
+                  <td>{bill.currentReading}</td>
+                  <td>₱ {bill.rate.toFixed(2)}</td>
+                  <td>₱ {bill.calculatedBill.toFixed(2)}</td>
+                  <td>{bill.shop.name}</td>
+                  <td>
+                    <button onClick={() => handleDeleteBill(bill._id)} className="btn btn-danger">
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
 
-          return (
-            <tr key={bill._id}>
-              <td>{new Date(bill.date).toLocaleDateString()}</td>
-              <td>{bill.previousReading}</td>
-              <td>{bill.currentReading}</td>
-              <td>₱ {bill.rate}</td>
-              <td>₱ {bill.calculatedBill}</td>
-              <td>{bill.shop.name}</td>
-              <td>
-                <button
-                  onClick={() => handleDeleteBill(bill._id)}
-                  className="btn btn-danger"
-                >
-                  Delete
-                </button>
-              </td>
-            </tr>
-          );
-        })}
-        </tbody>
-      </table>
-    </div></>
+        {/* Card view for mobile screens */}
+        <div className="d-md-none">
+          {history.map((bill) => (
+            <div key={bill._id} className="card mb-3 p-3 shadow-sm">
+              <div className="card-body">
+                <h5 className="card-title font-weight-bold text-center" style={{ fontSize: '1.5rem' }}>{bill.shop.name}</h5>
+                <div className="d-flex justify-content-between table-secondary text-black p-2">
+                  <span><strong>Date:</strong></span> <span>{new Date(bill.date).toLocaleDateString()}</span>
+                </div>
+                <div className="d-flex justify-content-between bg-light text-black p-2">
+                  <span><strong>Previous Reading:</strong></span> <span>{bill.previousReading}</span>
+                </div>
+                <div className="d-flex justify-content-between table-secondary text-black p-2">
+                  <span><strong>Current Reading:</strong></span> <span>{bill.currentReading}</span>
+                </div>
+                <div className="d-flex justify-content-between bg-light text-black p-2">
+                  <span><strong>Rate:</strong></span> <span>₱ {bill.rate.toFixed(2)}</span>
+                </div>
+                <div className="d-flex justify-content-between table-secondary text-black p-2">
+                  <span><strong>Total Bill:</strong></span> <span>₱ {bill.calculatedBill.toFixed(2)}</span>
+                </div>
+                <div className="text-center mt-2">
+                  <button onClick={() => handleDeleteBill(bill._id)} className="btn btn-danger">
+                    Delete
+                  </button>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </>
   );
 };
 

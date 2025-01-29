@@ -2,7 +2,7 @@
 import axios from 'axios';
 import { Shop } from '../types/Shop';
 
-const API_URL = 'https://electric-bill-calcu-server.vercel.app/api/shops';
+const API_URL = 'http://localhost:5000/api/shops';
 
 const getShops = async (): Promise<Shop[]> => {
   const response = await axios.get(`${API_URL}/getShops`);
